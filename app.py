@@ -38,18 +38,18 @@ def index():
 @app.route('/top-games/<int:year>')
 def top_games(year):
     #query the data for plotting
-    data = list(games.find({"Release_year":year}).sort("Peak_CCU", -1).limit(10))
+    data = list(games.find({"Release_year":year}).sort("Metacritic_score", -1).limit(10))
 
     #prepare data for plotting:
     game_names = [each["Name"] for each in data]
-    popularity = [each['Peak_CCU'] for each in data]
+    popularity = [each['Metacritic_score'] for each in data]
 
     # Create the plot
     sns.set(style="whitegrid")
     plt.figure(figsize=(10, 6))
     sns.barplot(x=popularity, y=game_names, hue=game_names, palette='viridis', legend=False)
-    plt.title(f'Top 10 Games of {year} by Peak Concurrent Users')
-    plt.xlabel('Peak Concurrent Users')
+    plt.title(f'Top 10 Games of {year} by the highest Metacritic score')
+    plt.xlabel('Metacritic Score')
     plt.ylabel('Game Name')
 
     # Adjust layout
