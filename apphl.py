@@ -1,7 +1,10 @@
 from flask import Flask, render_template, jsonify
 import pandas as pd
 import plotly.express as px
+<<<<<<< HEAD
 import plotly
+=======
+>>>>>>> 3dc85a32a0b5a8556caca498ed8ee9bc49ffdefe
 import json
 
 app = Flask(__name__)
