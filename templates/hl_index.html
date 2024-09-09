@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Graphs</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Interactive Graphs</h1>
+    <div>
+        <button onclick="updatePlot('positive_vs_price')">Positive Reviews vs Price</button>
+        <button onclick="updatePlot('negative_vs_price')">Negative Reviews vs Price</button>
+        <button onclick="updatePlot('rating_difference_vs_price')">Rating Difference vs Price</button>
+    </div>
+    <div id="plot"></div>
+    <script>
+        function updatePlot(plotType) {
+            fetch(`/plot/${plotType}`)
+                .then(response => response.json())
+                .then(data => {
+                    const plotDiv = document.getElementById('plot');
+                    // Assuming the JSON is properly formatted with 'data' and 'layout'
+                    Plotly.react(plotDiv, data.data, data.layout);
+                })
+                .catch(error => console.error('Error fetching plot data:', error));
+        }
+
+        // Load the default plot
+        updatePlot('positive_vs_price');
+    </script>
+</body>
+</html>
