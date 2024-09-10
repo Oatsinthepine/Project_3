@@ -1,6 +1,5 @@
-// Declare the local output_file.json for later D3 reading
+// Declare the local output_file.json for later D3 reading json.
 var local_path = '/output_file.json'
-
 
 //Using d3.json to read the games data
 d3.json(local_path).then(function (data) {
@@ -10,19 +9,19 @@ d3.json(local_path).then(function (data) {
   // Step 1: Group data by 'Release_year', create a function to checking if the year key exists in the accumulate object. 
   //If it doesn’t, initialise an empty array. Then adds the current game object to the array.
   function groupByYear(accumulator, current) {
-
+    
     const year = current.Release_year;
-
+    // if year not in checking, create an empty array for holding the year.
     if (!accumulator[year]) {
       accumulator[year] = [];
     };
-
+    // Then append the year's corresponding data into the array.
     accumulator[year].push(current);
-
+    
     return accumulator;
   };
 
-
+ //using .reduce to form a nested object array, each year as the key.
   const groupedData = data.reduce(groupByYear, {});
 
   // Step 2: Sort each group by 'Peak_CCU' in descending order
@@ -97,6 +96,7 @@ d3.json(local_path).then(function (data) {
 
   // Function to plot the scatter plot
   function plotScatterPlot(data) {
+    // reterive each required field using .map()
     let scatterNames = data.map(obj => obj.Name);
     let scatterPrice = data.map(obj => obj.Price);
     let scatterPlaytime = data.map(obj => obj.Average_playtime);
@@ -134,6 +134,7 @@ d3.json(local_path).then(function (data) {
   // Call this function after loading and processing data
   plotScatterPlot(topGamesPerYear[defaultYear]);
 
+  //display all the required info in the html panel.
   function displayPanelInfo(data) {
     const topGame = data[0].Name;
     const avgMetacriticScore = d3.mean(data, d => d.Metacritic_score);
@@ -146,6 +147,7 @@ d3.json(local_path).then(function (data) {
     const uniqueGenres = [...new Set(genres)];  // Get unique genres
     const popularGenres = uniqueGenres.join(', ');  // Convert to comma-separated string
 
+    // selct the corresponding id in html and it will refresh each time for different dropdown.
     d3.select("#games-metadata").html(`
       <p><strong>Top Game of the year:</strong> ${topGame}</p>
       <p><strong>Average Metacritic Score:</strong> ${avgMetacriticScore.toFixed(2)}</p>
@@ -158,7 +160,6 @@ d3.json(local_path).then(function (data) {
   //Display the default year panel info.
   displayPanelInfo(topGamesPerYear[defaultYear]);
 
-
   //Update the bar chart when the dropdown selection changes
   dropdown.on('change', function respondToChange() {
     const selectedYear = dropdown.property('value');
@@ -168,5 +169,5 @@ d3.json(local_path).then(function (data) {
   });
 
 }).catch(function (error) {
-  console.error('Error loading the JSON data:', error);
+  console.error('Error loading the JSON data:', error); // error handelling.
 });
