@@ -31,11 +31,11 @@ games_collection = db['Games_collection']  # Using collections which has updated
 @app.route('/')
 def home():
     return (
-        "<h1>Welcome to the Streams Data Analysis App API</h1>"
+        "<h1>Welcome to the Steam Data Analysis App API</h1>"
         "<p>Available Routes:</p>"
         "<li><a href='/about'>About</a></li>"
         "<li><a href='/api/v1.0/publishers-vs-positive-ratings'>Top 10 Publishers with highest Positive Ratings</a></li>"
-        "<li><a href='/api/v1.0/publishers-vs-positive-rating-percentage'>Top 10 Publishers with highest Positive Rating Percentage</a></li>"
+        "<li><a href='/api/v1.0/publishers-vs-positive-rating-percentage'>Top 10 Publishers with highest Positive Rating Percentage (Total Ratings > 40,000)</a></li>"
         "<li><a href='/api/v1.0/publishers-vs-negative-rating'>Top 10 Publishers with highest Negative Ratings</a></li>"
         "</ul>"
     )
@@ -45,7 +45,50 @@ def home():
 @app.route("/about")
 def about():
     print("Server received request for 'About' page...")
-    return "Welcome to my 'About' page!"
+    return """
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Game Ratings Analysis Dashboard</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+		h2 {
+			color: #337ab7;
+		}
+	</style>
+</head>
+<body>
+	<h1>About</h1>
+	<p>Welcome to the Game Ratings Analysis Dashboard! This platform provides detailed analytics about game publishers and their ratings, based on data collected from the Steam site.</p>
+	
+	<h2>API Features</h2>
+	<ul>
+		<li>
+			<h3>Top 10 Publishers by Highest Positive Ratings</h3>
+			<p>Endpoint: <a href='/api/v1.0/publishers-vs-positive-ratings'>Top 10 Publishers with highest Positive Ratings</a></p>
+			<p>This endpoint returns a bar chart visualizing the top 10 game publishers based on their highest positive ratings for a single game. It helps identify which publishers have developed highly acclaimed games within the gaming community.</p>
+		</li>
+		<li>
+			<h3>Top 10 Publishers by Positive Rating Percentage</h3>
+			<p>Endpoint: <a href='/api/v1.0/publishers-vs-positive-rating-percentage'>Top 10 Publishers with highest Positive Rating Percentage (Total Ratings > 40,000)</a></p>
+			<p>This endpoint showcases the top 10 publishers with the highest positive rating percentage. The visualization filters out publishers with fewer than 40,000 total ratings. This plot gives you information about the publishers that consistently deliver games with high community approval.</p>
+		</li>
+		<li>
+			<h3>Top 10 Publishers by Highest Negative Ratings</h3>
+			<p>Endpoint: <a href='/api/v1.0/publishers-vs-negative-rating'>Top 10 Publishers with highest Negative Ratings</a></p>
+			<p>This endpoint presents the top 10 publishers whose games received the highest number of negative ratings. It helps users to filter out Publishers which received high negative ratings for a Game.</p>
+		</li>
+	</ul>
+	
+	<h2>Contact</h2>
+	<ul>
+		<li>Project 3 : Group 3 Team</li>
+	</ul>
+</body>
+</html>
+    """
 
 @app.route('/api/v1.0/publishers-vs-positive-ratings', methods=['GET'])
 def publishers_vs_positive_ratings():
